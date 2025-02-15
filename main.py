@@ -55,6 +55,10 @@ def draw():
     screen.draw.textbox("skip",skip_box,color="black",angle=-90)
     screen.draw.textbox(f"score: {score}",score_box,color="white")
     screen.draw.textbox(question[0].strip(),question_box,color="white",shadow=(0.5,0.5),scolor="grey")
+    index = 1
+    for answer_box in answer_boxes:
+        screen.draw.textbox(question[index].strip(), answer_box, color = "black")
+        index = index + 1
 
 def update():
     move_marquee()
@@ -84,7 +88,7 @@ def on_mouse_down(pos):
             if index is int(question[5]):
                 correct_answer()
             else:
-                game_over()
+                is_game_over()
         index = index + 1
     if skip_box.collidepoint(pos):
         skip_question()
@@ -96,9 +100,9 @@ def correct_answer():
         question = read_next_question()
         time_left = 10
     else:
-        game_over()
+        is_game_over()
 
-def game_over():
+def is_game_over():
     global question, game_over, time_left
     message = f"Game over!\nYou got a total of {score} right!"
     question = [message, "-","-","-","-",5]
@@ -111,14 +115,14 @@ def skip_question():
         question = read_next_question()
         time_left = 10
     else:
-        game_over()
+        is_game_over()
 
 def update_time_left():
     global time_left
     if time_left:
         time_left = time_left - 1
     else:
-        game_over()
+        is_game_over()
 
 read_question_file()
 question = read_next_question()
